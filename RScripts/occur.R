@@ -20,3 +20,22 @@ for(i in 1:100){
 }
 
 hist(err)
+
+dim(ogut)
+
+amat <- eqmat
+for(i in 1:181){
+  sp <- which(eqmat[i,] == 1)
+  amat[i,sp] <- eq.abund2[[i]]/sum(eq.abund2[[i]])
+}
+
+
+test <- ccrepe(amat)
+corrs <- test$sim.score
+corrs[test$p.values <= 0.05] <- 1
+corrs[test$p.values > 0.05] <- 0
+corrs[is.na(test$sim.score)] <- 0
+
+plot(graph.adjacency(corrs), layout = layout.circle)
+library(igraph)
+sum(corrs)
